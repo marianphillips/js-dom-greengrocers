@@ -105,6 +105,22 @@ sort.addEventListener("change", function (event) {
   renderStoreItems();
 });
 
+function addItemToCart(item) {
+  const itemInCartAlready = state.cart.find((x) => x.name === item.name);
+  if (itemInCartAlready !== undefined) {
+    itemInCartAlready.quantity++;
+  } else {
+    const cartItem = {
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      quantity: 1,
+    };
+
+    state.cart.push(cartItem);
+  }
+}
+
 function renderStoreItems() {
   storeItems.innerHTML = "";
   for (const item of state.items) {
@@ -126,20 +142,7 @@ function renderStoreItems() {
 
     const button = listItemInStore.querySelector("button");
     button.addEventListener("click", function () {
-      const itemInCartAlready = state.cart.find((x) => x.name === item.name)
-      if(itemInCartAlready !== undefined) {
-        itemInCartAlready.quantity++
-      }
-      else {
-        const cartItem = {
-          id: item.id,
-          name: item.name,
-          price: item.price,
-          quantity: 1,
-        };
-
-        state.cart.push(cartItem);
-      }
+      addItemToCart(item)
       renderCartItems();
       renderTotal();
     });
